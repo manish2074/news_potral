@@ -1,0 +1,33 @@
+{% extends "partials/base.html" %}
+
+{% block header %}
+{% include "partials/header.html" %}
+{% endblock header %}
+
+{% block navarea %}
+{% include "partials/navarea.html" %}
+{% endblock navarea %}
+
+{% block news_section %}
+{% include "partials/news_section.html" %}
+{% endblock news_section %}
+
+
+
+{% block content %}
+<form method="POST">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    {{ form }}
+    <button type="submit" class="btn btn-danger">Login </button>
+    
+    <!-- form cahi sadai pani block ra enblock ko bich ma -->
+</form>
+{% endblock content %}
+
+{% block footer %}
+{% include "partials/footer.html" %}
+{% endblock footer %}
+
+{% block script %}
+{% include "partials/script.html" %}
+{% endblock script %}
