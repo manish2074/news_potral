@@ -16,8 +16,9 @@
 
           <a href="{% url 'logout' %}" style='color:#FFF'>Logout  </a>
           {% else %}
-            <a href= "{% url 'login' %}" style='color:#FFF'> Login </a>
-            <a href=" " style='color:#FFF'>Sign Up </a>
+            <a href= "{% url 'login' %}" style='color:#FFF'> Login || </a>
+            <a href= "{% url 'signup' %}" style='color:#FFF'> Signup </a>
+            
         {% endif %}
         </p>     
         </div>

@@ -1,4 +1,3 @@
-
 {% extends "partials/base.html" %}
 {% load crispy_forms_tags %}
 
@@ -17,18 +16,8 @@
 
 
 {% block content %}
-<div class='col-lg-3 col-md-3'>
-</div>
-<div class='col-lg-6 col-md-6'>
-<form method="POST">
-    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-danger">Login </button>
-</div>
-    <div class='col-lg-3 col-md-3'>
-    </div>
-    <!-- form cahi sadai pani block ra enblock ko bich ma -->
-</form>
+<p> YOUR ACCOUNT HAS BEEN CREATED SUCCESSFULLY </p>
+<p> <a href="{%url 'login' %}"><span>Login Now</span></a></p>
 {% endblock content %}
 
 {% block footer %}
