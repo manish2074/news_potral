@@ -12,20 +12,20 @@ class UserSignUpView(View):
         
         return render(request,self.template_name,{"form":form})
     
-        def post(self,request):
-            form = UserSignUpForm(request.POST)
-            if form.is_valid():
-                user= form.save(commit=False)
-                raw_password= form.cleaned_data['password1']
-                user.set_password(raw_password)
-                user.save()
+    def post(self,request):
+        form = UserSignUpForm(request.POST)
+        if form.is_valid():
+            user= form.save(commit=False)
+            raw_password= form.cleaned_data['password1']
+            user.set_password(raw_password)
+            user.save()
 
-               # user= authenticate(username=user.username, password=user.password)
-                #if user:
-                 #   login(request, user)
-                  #  return redirect("home")
+            # user= authenticate(username=user.username, password=user.password)
+            #if user:
+                #   login(request, user)
+                #  return redirect("home")
 
 
-                return render(request,"account/signup_success.html")
-            return render(request,"self.template_name")
+            return render(request,"accounts/signup_success.html")
+        return render(request,self.template_name,{"form":form})
         #23 to 26 samma comment garera comment vako hataye pani hunxa
