@@ -27,11 +27,11 @@
             <h2><span>Politics</span></h2>
             <div class="single_post_content_left">
               <ul class="business_catgnav  wow fadeInDown">
+              {% firstof "true" as count %}
               {% for news in news_list %}
-              {% if forloop.counter == 1 %}
-              
-              
-              
+                {% if count == "true" and news.category == "0" %}
+                {% firstof "false" as count %}
+
               <li>
                   <figure class="bsbig_fig"> <a href="pages/single_page.html" class="featured_img"> <img alt="" src="{%static 'images/featured_img1.jpg' %}"> <span class="overlay"></span> </a>
                     <figcaption> <a href="pages/single_page.html">{{news.title}}</a> </figcaption>
