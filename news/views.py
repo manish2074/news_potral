@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 from news import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -27,8 +27,23 @@ class CreateNewsView(LoginRequiredMixin,CreateView):
         print(form.errors)
         return super (CreateNewsView, self).form_invalid(form)
 
-class NewsList(ListView):
+'''class NewsList(ListView):
     model = News   
     context_object_name='news_list'
     template_name='index.html' 
-    ordering =['-created_at']    
+    ordering =['-created_at']'''    
+
+class NewsTemplateView(TemplateView):
+    template_name="index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        news= News.objects.all()
+
+        context["latest_news"] =news.order_by("-created_at") 
+        context["political_news"] =news.filter(category="0").order_by("-created_at") 
+        context["sports_news"] =news.filter(category="1").order_by("-created_at")
+        context["fashion_news"] =news.filter(category="2").order_by("-created_at") 
+        context["technology_news"] =news.filter(category="3").order_by("-created_at") 
+        return context
+        

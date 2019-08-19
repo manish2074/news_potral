@@ -27,35 +27,34 @@
             <h2><span>Politics</span></h2>
             <div class="single_post_content_left">
               <ul class="business_catgnav  wow fadeInDown">
-              {% firstof "true" as count %}
-              {% for news in news_list %}
-                {% if count == "true" and news.category == "0" %}
-                {% firstof "false" as count %}
-
+              {% for news in political_news %}
+              {% if forloop.counter == 1 %}
+              
+              
               <li>
                   <figure class="bsbig_fig"> <a href="pages/single_page.html" class="featured_img"> <img alt="" src="{%static 'images/featured_img1.jpg' %}"> <span class="overlay"></span> </a>
                     <figcaption> <a href="pages/single_page.html">{{news.title}}</a> </figcaption>
                     <p>{{ news.story }}</p>
                   </figure>
                 </li>
+             
               {% endif %}
               {% endfor %}
+              
+
                 
               </ul>
             </div>
             <div class="single_post_content_right">
               <ul class="spost_nav">
-              {% for news in news_list %}
-
+              {% for news in political_news %}
               {% if forloop.counter != 1 %}
               <li>
                   <div class="media wow fadeInDown"> <a href="pages/single_page.html" class="media-left"> <img alt="" src="{%static 'images/post_img2.jpg' %}"> </a>
                     <div class="media-body"> <a href="pages/single_page.html" class="catg_title"> {{news.title}}</a> </div>
                   </div>
                 </li>
-              
               {% endif %}
-              
               {% endfor %}
                 
               </ul>
