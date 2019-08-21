@@ -40,10 +40,22 @@ class NewsTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         news= News.objects.all()
 
-        context["latest_news"] =news.order_by("-created_at") 
-        context["political_news"] =news.filter(category="0").order_by("-created_at") 
-        context["sports_news"] =news.filter(category="1").order_by("-created_at")
-        context["fashion_news"] =news.filter(category="2").order_by("-created_at") 
-        context["technology_news"] =news.filter(category="3").order_by("-created_at") 
+        context["latest_news"] =news.order_by("-created_at") [:5]
+        context["political_news"] =news.filter(category="0").order_by("-created_at") [:5]
+        context["sports_news"] =news.filter(category="1").order_by("-created_at")[:5]
+        context["fashion_news"] =news.filter(category="2").order_by("-created_at") [:5]
+        context["technology_news"] =news.filter(category="3").order_by("-created_at") [:5]
         return context
+
+class NewsCategoryView(ListView):
+    model = News
+    ordering = ['-created_at']
+    context_object_name = 'category_list'
+    template_name="news/category_news.html"
+
+    def get_queryset(self):
+        category = self.kwargs.get('category')
+        category_key =[item[0] for item in News.CATEGORY if item[1]==category][0]
+        return News.objects.filter(category=category_key)
+    
         
