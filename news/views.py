@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView, TemplateView
+from django.views.generic import CreateView, ListView, TemplateView , DetailView
 from news import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -57,5 +57,11 @@ class NewsCategoryView(ListView):
         category = self.kwargs.get('category')
         category_key =[item[0] for item in News.CATEGORY if item[1]==category][0]
         return News.objects.filter(category=category_key)
+
+class NewsDetailView(DetailView):
+    model = News
+    template_name="news/detail_news.html"
+        
+
     
         

@@ -16,7 +16,23 @@
 
 
 {% block content %}
-{{}}
+<div class="col-lg-12 col-md-12">
+    <div class="">
+        <div class="single_post_content">
+        <h2><span>Technology</span></h2>
+        <ul class="business_catgnav">
+        {% for news in category_list %}
+            <li>
+            <figure class="bsbig_fig wow fadeInDown"> <a href="pages/single_page.html" class="featured_img"> <img alt="" src="{% static 'images/featured_img3.jpg' %}"> <span class="overlay"></span> </a>
+                <figcaption> <a href="pages/single_page.html">{{ news.title }}</a> </figcaption>
+                <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a phare...</p>
+            </figure>
+            </li>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block footer %}
