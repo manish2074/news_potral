@@ -40,7 +40,7 @@
             </div>
             <div class="related_post">
               <h2>All Comments <i class="fa fa-thumbs-o-up"></i></h2>
-                 <div class="list-group">
+                 <div class="list-group" id="comment-list">
                {% for comment in comments %}
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                   <div class="d-flex w-100 justify-content-between">
@@ -53,11 +53,11 @@
               </div>
             </div>
             <div>
-              <form method="post" action="{{ news.get_absolute_url }}comment/">
-                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+              <form id="comment-form">
                 <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Leave Comment</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="feedback"></textarea>
+             
+                  <label for="feedback">Leave Comment</label>
+                  <textarea class="form-control" id="feedback" rows="3" name="feedback"></textarea>
                 </div>
                 <button type="submit" class="btn btn-info">Comment</button>
               </form>
@@ -76,31 +76,20 @@
           <h3>Street Hills</h3>
           <img src="../images/post_img1.jpg" alt=""/> </div>
         </a> </nav>
+     
       <div class="col-lg-4 col-md-4 col-sm-4">
         <aside class="right_content">
           <div class="single_sidebar">
             <h2><span>Popular Post</span></h2>
             <ul class="spost_nav">
-              <li>
-                <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img1.jpg"> </a>
-                  <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
-                </div>
-              </li>
-              <li>
-                <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img2.jpg"> </a>
-                  <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                </div>
-              </li>
-              <li>
-                <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img1.jpg"> </a>
-                  <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                </div>
-              </li>
-              <li>
-                <div class="media wow fadeInDown"> <a href="single_page.html" class="media-left"> <img alt="" src="../images/post_img2.jpg"> </a>
-                  <div class="media-body"> <a href="single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                </div>
-              </li>
+             {% for news in popular_news %}
+             <li>
+              <div class="media wow fadeInDown"> <a href="{{news.get_absolute_url}}" class="media-left"> <img alt="" src="{{news.cover_image.url}}"> </a>
+                <div class="media-body"> <a href="{{news.get_absolute_url}}" class="catg_title">{{news.title}}</a> </div>
+              </div>
+            </li>
+             {% endfor %}
+              
             </ul>
           </div>
           <div class="single_sidebar">
@@ -190,5 +179,26 @@
 
 {% block script %}
 {% include "partials/script.html" %}
+<script>
+  $("#comment-form").submit(function (error){
+    error.preventDefault();
+    $.ajax({
+      url: "{{ news.get_absolute_url }}comment/",
+      method: "post",
+      data: {
+        feedback: $("#feedback").val(),
+        csrfmiddlewaretoken : "{{ csrf_token }}"
+      },
+      success: function(response){
+        console.log(response)
+        $("#comment-list").append(response)
+      },
+      error: function(err){
+        console.log(err)
+      }
+    });
+  });
+</script>
+
 {% endblock script %}
 

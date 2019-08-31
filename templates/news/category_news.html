@@ -28,7 +28,7 @@
             <li>
             <figure class="bsbig_fig wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="featured_img"> <img alt="" src="{{ news.cover_image.url }}"> <span class="overlay"></span> </a>
                 <figcaption> <a href="pages/single_page.html">{{ news.title }}</a> </figcaption>
-                <p>Nunc tincidunt, elit non cursus euismod, lacus augue ornare metus, egestas imperdiet nulla nisl quis mauris. Suspendisse a phare...</p>
+                <p>{{news.story}}</p>
             </figure>
             </li>
         {% endfor %}

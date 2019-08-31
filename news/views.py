@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.utils.text import slugify
-from news.models import News, Comment
+from news.models import News, Comment , Tag , Title
 # Create your views here.
 
 class CreateNewsView(LoginRequiredMixin,CreateView):
@@ -38,17 +38,18 @@ class CreateNewsView(LoginRequiredMixin,CreateView):
 
 class NewsTemplateView(TemplateView):
     template_name="index.html"
+   
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         news=News.objects.all()
     
-        context["latest_news"] = news.order_by("-created_at") [:10]
+        context["latest_news"] = news.order_by("-created_at") [:5]
         context["political_news"] = news.filter(category="0").order_by("-created_at") [:5]
         context["sports_news"] = news.filter(category="3").order_by("-created_at") [:5]
         context["fashion_news"] = news.filter(category="1").order_by("-created_at") [:5]
         context["business_news"] = news.filter(category="2").order_by("-created_at") [:5]
-        
+        context["popular_news"] = news.order_by("-count")[:5]
         
         return context
 
@@ -72,10 +73,13 @@ class NewsDetailView(DetailView):
     model = News
     template_name='news/detail_news.html'
     context_object_name= 'news'
-
+   
+   
     def get_context_data(self, **kwargs):
+        news=News.objects.all()
         context = super().get_context_data(**kwargs)
         context['comments'] = Comment.objects.filter(news=self.object)
+        context["popular_news"] = news.order_by("-count")[:5]
         self.object.count = self.object.count + 1
         self.object.save()
         return context
@@ -100,3 +104,15 @@ def create_comment(request,**kwargs):
     comment = Comment(**payload)
     comment.save()
     return render(request,"news/comment.html",{"comment":comment})
+
+
+class RelatedNewsView(TemplateView) :
+    template_name="index.html"
+   
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tags=Tag.tag.all()
+
+        context['related_news']=tags.filter()
+
+        return context
