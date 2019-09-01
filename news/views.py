@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.utils.text import slugify
-from news.models import News, Comment , Tag , Title
+from news.models import News, Comment
 # Create your views here.
 
 class CreateNewsView(LoginRequiredMixin,CreateView):
@@ -53,6 +53,8 @@ class NewsTemplateView(TemplateView):
         
         return context
 
+    
+
 class NewsCategoryView(ListView):
     model = News
     ordering =['-created_at']
@@ -84,6 +86,9 @@ class NewsDetailView(DetailView):
         self.object.save()
         return context
 
+  
+    
+
 class NewsUpdateView(LoginRequiredMixin,UpdateView):
     model = News
     template_name="news/update_news.html"
@@ -105,14 +110,9 @@ def create_comment(request,**kwargs):
     comment.save()
     return render(request,"news/comment.html",{"comment":comment})
 
-
-class RelatedNewsView(TemplateView) :
-    template_name="index.html"
+def news_single(request,slug):
+    news = get_object_or_404(Comment, slug=slug)
+    news_related = news.tags.similar_objects()
+    return render(request,'detail_news.html',
+    {'news':news ,'news_related':news_related})    
    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        tags=Tag.tag.all()
-
-        context['related_news']=tags.filter()
-
-        return context

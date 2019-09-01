@@ -67,6 +67,24 @@
           </div>
         </div>
       </div>
+      <div>
+        <h2><span>Related Post</span></h2>
+        <ul class="business_catgnav wow fadeInDown">
+          {% for news in news_related %}
+         
+          <li>
+          
+          <figure class="bsbig_fig"> <a href="{{ news.get_absolute_url }}" class="featured_img"> <img alt="" src='{{ news.cover_image.url }}'> <span class="overlay"></span> </a>
+              <figcaption> <a href="{{ news.get_absolute_url }}">{{news.title}}</a> </figcaption>
+              <p>{{news.story}}</p>
+            </figure>
+          
+          
+          {% endfor %}
+            
+          </li>
+        </ul>
+      </div>
       <nav class="nav-slit"> <a class="prev" href="#"> <span class="icon-wrap"><i class="fa fa-angle-left"></i></span>
         <div>
           <h3>City Lights</h3>
