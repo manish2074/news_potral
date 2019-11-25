@@ -18,6 +18,13 @@ from django.urls import path, include
 from news.views import NewsTemplateView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.admin import AdminSite
+
+AdminSite.site_header="Django"
+AdminSite.site_title="Django Title"
+AdminSite.index_title="Title"
+AdminSite.login_template="login.html"
+
 urlpatterns = [
     path('', NewsTemplateView.as_view(), name='home'),
     path('admin/', admin.site.urls),

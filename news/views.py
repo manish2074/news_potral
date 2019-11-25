@@ -5,7 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.utils.text import slugify
-from news.models import News, Comment
+from news.models import News, Comment, TaggableManager
+
 # Create your views here.
 
 class CreateNewsView(LoginRequiredMixin,CreateView):
@@ -70,8 +71,14 @@ class NewsCategoryView(ListView):
         category = self.kwargs.get("category")
         category_key = [item[0] for item in News.CATEGORY if item[1] == category][0]
         return News.objects.filter(category=category_key)
-            
-class NewsDetailView(DetailView):
+
+class TagMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(TagMixin, self).get_context_data(**kwargs)
+        context['tags'] =TaggableManager().bulk_related_objects(self.object,using = builtins.str)
+        return context   
+
+class NewsDetailView(TagMixin,DetailView):
     model = News
     template_name='news/detail_news.html'
     context_object_name= 'news'
@@ -82,6 +89,7 @@ class NewsDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['comments'] = Comment.objects.filter(news=self.object)
         context["popular_news"] = news.order_by("-count")[:5]
+        # context["tags"] = TaggableManager().bulk_related_objects(self.object)
         self.object.count = self.object.count + 1
         self.object.save()
         return context
@@ -110,9 +118,15 @@ def create_comment(request,**kwargs):
     comment.save()
     return render(request,"news/comment.html",{"comment":comment})
 
-def news_single(request,slug):
-    news = get_object_or_404(Comment, slug=slug)
-    news_related = news.tags.similar_objects()
-    return render(request,'detail_news.html',
-    {'news':news ,'news_related':news_related})    
+
+
+class TagIndexView(TagMixin,ListView):
+    model = News
+    template_name='news/detail_news.html'
+    context_object_name= 'news'
+
+    def get_queryset(self):
+        return News.objects.filter(tags__slug=self.kwargs.get('slug'))
+
+    
    

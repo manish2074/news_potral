@@ -14,14 +14,24 @@ class News(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     cover_image=models.ImageField(upload_to="uploads")
     reporter = models.ForeignKey(User, on_delete=models.SET_NULL,null=True)
-   
+    tags = TaggableManager()
     def get_absolute_url(self):
+    
         return reverse("detail_news",kwargs={"category":self.get_category_display(), "pk":self.pk, "slug":self.slug})
+    
+    def __str__(self):
+        return self.title
 
+    class Meta:
+        
+        verbose_name = 'News'
+        verbose_name_plural = 'News'
 class Comment(models.Model):
     news= models.ForeignKey(News,on_delete=models.CASCADE,related_name="news_comment") 
     comment_by=models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
     feedback = models.TextField()
     create_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
-    tags = TaggableManager()
+   
+
+   
